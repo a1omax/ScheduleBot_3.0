@@ -122,11 +122,12 @@ def sched_named_day(message, day):
         if first_gr:
             for i in range(len(first_gr)):
                 if first_gr[i][1] is not None and second_gr[i][1] is not None:
-                    to_write += f"\n\n{first_gr[i][0]} пара:\n" \
-                                f"Подгруппа А: \n{first_gr[i][1]}\nКабінет: {first_gr[i][2]}" \
-                                f"\nПодгруппа B: \n{second_gr[i][1]}\nКабінет: {second_gr[i][2]}"
-
-            bot.reply_to(message, to_write)
+                    to_write += f"\n\n*{first_gr[i][0]} пара:*\n" \
+                                f"*Подгруппа А:* \n{first_gr[i][1]}\nКабінет: {first_gr[i][2]}" \
+                                f"\n*Подгруппа B:* \n{second_gr[i][1]}\nКабінет: {second_gr[i][2]}"
+                else:
+                    to_write += f"\n\n*{first_gr[i][0]} пара:*\nНет пары"
+            bot.reply_to(message, to_write, parse_mode= 'Markdown')
         else:
             bot.reply_to(message, "У вас нет пар")
 
@@ -160,13 +161,13 @@ def sched_by_day(message, day_change):
         if first_gr:
             for i in range(len(first_gr)):
                 if first_gr[i][1] is not None and second_gr[i][1] is not None:
-                    to_write += f"\n\n{first_gr[i][0]} пара:\n" \
-                                f"Подгруппа А: \n{first_gr[i][1]}\nКабінет: {first_gr[i][2]}" \
-                                f"\nПодгруппа B: \n{second_gr[i][1]}\nКабінет: {second_gr[i][2]}"
+                    to_write += f"\n\n*{first_gr[i][0]} пара:*\n" \
+                                f"*Подгруппа А:* \n{first_gr[i][1]}\nКабінет: {first_gr[i][2]}" \
+                                f"\n*Подгруппа B:* \n{second_gr[i][1]}\nКабінет: {second_gr[i][2]}"
                 else:
-                    to_write += f"\n\n{first_gr[i][0]} пара:\nНет пары"
+                    to_write += f"\n\n*{first_gr[i][0]} пара:*\nНет пары"
 
-            bot.reply_to(message, to_write)
+            bot.reply_to(message, to_write, parse_mode= 'Markdown')
         else:
             bot.reply_to(message, "У вас нет пар")
 
