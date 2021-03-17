@@ -109,7 +109,7 @@ def write_tg(first_gr, second_gr, day, message):
                 if second_gr[i][2] is not None:
                     to_write += "\nКабінет: " + str(second_gr[i][2])
             else:
-                to_write += "\n\n*"+first_gr[i][0]+" пара:*\nНет пары"
+                to_write += "\n\n*"+str(first_gr[i][0])+" пара:*\nНет пары"
         bot.reply_to(message, to_write, parse_mode='Markdown')
     else:
         bot.reply_to(message, "У вас нет пар")
