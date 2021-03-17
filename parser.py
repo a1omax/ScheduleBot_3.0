@@ -79,7 +79,12 @@ def get_value(cell_array, flag = True):              # Принимает мас
             raise NameError("Cell has a wrong type")
 
         if isinstance(value, str):
-            value = (((value.replace("     ", "")).replace("     ", "")).replace("    ", "")).replace("   ", "")
+            value = value.replace("        ", " ")  # x8
+            value = value.replace("       ", " ")  # x7
+            value = value.replace("      ", " ")  # x6
+            value = value.replace("     ", " ")  # x5
+            value = value.replace("    ", " ")  # x4
+            value = value.replace("   ", " ")  # x3
 
         value_cell_array.append(value)
     return value_cell_array
