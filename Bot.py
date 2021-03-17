@@ -17,7 +17,7 @@ break_finish =[[9, 0],  [10, 30], [12, 30], [14, 0],  [15, 30],[16, 50], [18, 20
 dict_days = {
         0: ['monday', 'понедельник', 'пн', 'понеділок'],
         1: ['tuesday', 'вторник', 'вт', 'вівтор'],
-        2: ['wednesday', 'сред', 'ср', 'серед'],
+        2: ['wednesday', 'среда' ,'сред', 'ср', 'серед'],
         3: ['thursday', 'четверг', 'чт', 'четвер'],
         4: ['friday', 'пятница', 'пт', "п'ятниц", "пятниц"],
         5: ['saturday', 'суббота', 'сб ', 'субот', 'cуббот'],
@@ -101,13 +101,22 @@ def write_tg(first_gr, second_gr, day, message):
     to_write = "*" + dict_days[int(day)][1].capitalize() + "*"
     if first_gr:
         for i in range(len(first_gr)):
-            if first_gr[i][1] is not None and second_gr[i][1] is not None:
-                to_write += "\n\n*" + str(first_gr[i][0]) + " пара:*\n*Подгруппа А:* \n" + str(first_gr[i][1])
-                if first_gr[i][2] is not None:
-                    to_write += "\nКабінет: " + str(first_gr[i][2])
-                to_write += "\n*Подгруппа B:* \n" + str(second_gr[i][1])
-                if second_gr[i][2] is not None:
-                    to_write += "\nКабінет: " + str(second_gr[i][2])
+            if first_gr[i][1] is not None or second_gr[i][1] is not None:
+                to_write += "\n\n*" + str(first_gr[i][0]) + " пара:*\n*Подгруппа А:* \n"
+                if first_gr[i][1] is not None:
+                    to_write += str(first_gr[i][1])
+                    if first_gr[i][2] is not None:
+                        to_write += "\nКабінет: " + str(first_gr[i][2])
+                else:
+                    to_write += "Нет пары"
+
+                to_write += "\n*Подгруппа B:* \n"
+                if second_gr[i][1] is not None:
+                    to_write += str(second_gr[i][1])
+                    if second_gr[i][2] is not None:
+                        to_write += "\nКабінет: " + str(second_gr[i][2])
+                else:
+                    to_write += "Нет пары"
             else:
                 to_write += "\n\n*"+str(first_gr[i][0])+" пара:*\nНет пары"
         bot.reply_to(message, to_write, parse_mode='Markdown')
