@@ -255,7 +255,7 @@ def register_group(message):
 def start_message(message):
     bot.reply_to(message, "Бот расписания для ЧНУ\n\n*Команды:*\n"
                           "1. /today – выдает расисание на сегодня\n"
-                          "2. /tomorrow – выдает расисание на сегодня\n"
+                          "2. /tomorrow – выдает расисание на завтра\n"
                           "3. /day – выдает расисание на день недели\n"
                           "4. /group – записывает группу\n`Версия 3.1`\n`Создатель:` @A1omax", parse_mode='Markdown')
 
