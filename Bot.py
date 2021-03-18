@@ -240,7 +240,8 @@ def check_grp(msg):
 
     reply = set_group(msg)
     if reply == 0:
-        bot.reply_to(msg, "Неправильно указана группа или её нет в базе.")
+        bot.reply_to(msg, "Неправильно указана группа или её нет в базе. Введите команду /group и укажите свою группу")
+
 
 @bot.message_handler(commands=['group'])
 def register_group(message):
@@ -253,11 +254,14 @@ def register_group(message):
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    bot.reply_to(message, "Бот расписания для ЧНУ\n\n*Команды:*\n"
+    buttons = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=False, row_width=2)
+    buttons.row('/today', '/tomorrow', '/day', '/group')
+
+    bot.send_message(message.from_user.id, "Бот расписания для ЧНУ\n\n*Команды:*\n"
                           "1. /today – выдает расисание на сегодня\n"
-                          "2. /tomorrow – выдает расисание на завтра\n"
+                          "2. /tomorrow – выдает расисание на сегодня\n"
                           "3. /day – выдает расисание на день недели\n"
-                          "4. /group – записывает группу\n`Версия 3.1`\n`Создатель:` @A1omax", parse_mode='Markdown')
+                          "4. /group – записывает группу\n`Версия 3.1.1`\n`Создатель:` @A1omax", parse_mode='Markdown', reply_markup = buttons)
 
 
 bot.polling(none_stop=True)
