@@ -7,13 +7,14 @@ import sqlite3
 bot = telebot.TeleBot(TOKEN)
 
 # static vars time unused
-para_start = [[7, 30], [9, 0], [10, 30], [12, 30], [14, 0], [15, 30], [16, 50], [18, 20]]
-para_finish = [[8, 50], [10, 20], [11, 50], [13, 50], [15, 20], [16, 50], [18, 10], [19, 40]]
+# para_start = [[7, 30], [9, 0], [10, 30], [12, 30], [14, 0], [15, 30], [16, 50], [18, 20]]
+# para_finish = [[8, 50], [10, 20], [11, 50], [13, 50], [15, 20], [16, 50], [18, 10], [19, 40]]
 
-break_start = [[8, 50], [10, 20], [11, 50], [13, 50], [15, 20], [16, 50], [18, 10]]
-break_finish = [[9, 0], [10, 30], [12, 30], [14, 0], [15, 30], [16, 50], [18, 20]]
+# break_start = [[8, 50], [10, 20], [11, 50], [13, 50], [15, 20], [16, 50], [18, 10]]
+# break_finish = [[9, 0], [10, 30], [12, 30], [14, 0], [15, 30], [16, 50], [18, 20]]
 
-dict_days = {
+dict_days = \
+    {
     0: ['monday', 'понедельник', 'пн', 'понеділок'],
     1: ['tuesday', 'вторник', 'вт', 'вівтор'],
     2: ['wednesday', 'среда', 'сред', 'ср', 'серед'],
@@ -223,6 +224,7 @@ def check(message):
         sched_named_day(message, day)
     else:
         bot.reply_to(message, "Такого дня нет")
+    command_buttons(message)
 
 
 @bot.message_handler(commands=['day'])
@@ -232,10 +234,20 @@ def para_named_day(message):
         sched_named_day(message, day)
 
     else:
-        msg = bot.reply_to(message, "Введите день недели: ")
+        buttons = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True)
+        buttons.row('Понедельник', 'Вторник')
+        buttons.row('Среда', 'Четверг')
+        buttons.row('Пятница', 'Суббота')
+        buttons.row('Воскресенье')
+        msg = bot.send_message(chat_id=message.from_user.id, text='Введите день недели: ', reply_markup=buttons, reply_to_message_id=True)
         bot.register_next_step_handler(msg, check)
 
-
+def command_buttons(message):
+    buttons = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=False)
+    buttons.row('/today', '/tomorrow')
+    buttons.row('/day', '/group')
+    msg = bot.send_message(chat_id=message.from_user.id, text='­', reply_markup=buttons,
+                           reply_to_message_id=True)
 def check_grp(msg):
 
     reply = set_group(msg)
