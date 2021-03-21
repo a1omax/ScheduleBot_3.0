@@ -24,9 +24,21 @@ cur.execute("""CREATE TABLE IF NOT EXISTS schedule(
                     name_para_second TEXT,
                     cabinet_second TEXT
                     )""")
+cur.execute("""DROP TABLE IF EXISTS schedule""")
 con.commit()
 
 print(FILENAME)
+
+
+def start_cell():
+
+    for i in range(1, 20):
+        if get_value([ws["A" + str(i)]])[0] == "День":
+            global s_cell
+            s_cell = i-5
+            return 1
+
+    raise NameError("Нет клетки День")
 
 
 def read_wb(number_list):            # Чтение листа эксель
@@ -50,6 +62,8 @@ def get_cell_array(col, start, finish, step):           # Принимает д�
     letter = openpyxl.utils.cell.get_column_letter(col)
     array_cells = []
     i = 0
+    start +=s_cell
+    finish +=s_cell
     while True:
         num_cell = start + step * i
         if num_cell > finish:
@@ -57,7 +71,6 @@ def get_cell_array(col, start, finish, step):           # Принимает д�
         array_cells.append(ws[letter + str(num_cell)])
         i += 1
     return array_cells
-
 
 
 def get_value(cell_array, flag = True):              # Принимает массив клеток и возвращает массив их значений (включая merged)
@@ -214,6 +227,7 @@ def main():
     for ws_number in range(8):
         print(ws_number)
         read_wb(ws_number)                  # чтение 8 листов по очереди
+        start_cell()
         all_group_names.append(get_group_names_array())     # запись всех 8 массивов названий групп в один массив
         all_num_paras.append(get_num_para_array())
 
