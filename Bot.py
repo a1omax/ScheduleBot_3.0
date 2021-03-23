@@ -105,7 +105,7 @@ def set_group(msg):
 
 
 def week_now(change=0):
-    week = (int(now.strftime("%V")) + ((int(now.strftime("%d")) + change) // 7)) % 2
+    week = (int(now.strftime("%V")) + change // 7) % 2
     # Учебный год начинаться с четной недели (не совпадает)
     if week == 1:
         return "even"
@@ -274,7 +274,7 @@ def start_message(message):
                           "1. /today – выдает расисание на сегодня\n"
                           "2. /tomorrow – выдает расисание на сегодня\n"
                           "3. /day – выдает расисание на день недели\n"
-                          "4. /group – записывает группу\n`Версия 3.1.2`\n`Создатель:` @A1omax", parse_mode='Markdown', reply_markup = buttons)
+                          "4. /group – записывает группу\n`Версия 3.1.3`\n`Создатель:` @A1omax", parse_mode='Markdown', reply_markup = buttons)
 
 
 bot.polling(none_stop=True)
