@@ -114,6 +114,11 @@ def week_now(change=0):
 
 
 def write_tg(first_gr, second_gr, day, message):
+
+    buttons = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=False)
+    buttons.row('/today', '/tomorrow')
+    buttons.row('/day', '/group')
+
     to_write = "*" + dict_days[int(day)][1].capitalize() + "*"
     if first_gr:
         for i in range(len(first_gr)):
@@ -135,9 +140,11 @@ def write_tg(first_gr, second_gr, day, message):
                     to_write += "Нет пары"
             else:
                 to_write += "\n\n*" + str(first_gr[i][0]) + " пара:*\nНет пары"
-        bot.reply_to(message, to_write, parse_mode='Markdown')
+
     else:
-        bot.reply_to(message, "У вас нет пар")
+        to_write = "У вас нет пар"
+    bot.send_message(chat_id=message.chat.id, reply_to_message_id=True, text=to_write, reply_markup=buttons,
+                     parse_mode="Markdown")
 
 
 def sched_named_day(message, day):
@@ -223,8 +230,11 @@ def check(message):
     if day != -1:
         sched_named_day(message, day)
     else:
-        bot.reply_to(message, "Такого дня нет")
-    command_buttons(message)
+        buttons = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=False)
+        buttons.row('/today', '/tomorrow')
+        buttons.row('/day', '/group')
+        bot.send_message(chat_id=message.chat.id, text="Такого дня нет", reply_to_message_id=True, reply_markup=buttons)
+
 
 
 @bot.message_handler(commands=['day'])
@@ -239,15 +249,9 @@ def para_named_day(message):
         buttons.row('Среда', 'Четверг')
         buttons.row('Пятница', 'Суббота')
         buttons.row('Воскресенье')
-        msg = bot.send_message(chat_id=message.from_user.id, text='Введите день недели: ', reply_markup=buttons, reply_to_message_id=True)
+        msg = bot.send_message(chat_id=message.chat.id, text='Введите день недели: ', reply_markup=buttons, reply_to_message_id=True)
         bot.register_next_step_handler(msg, check)
 
-def command_buttons(message):
-    buttons = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=False)
-    buttons.row('/today', '/tomorrow')
-    buttons.row('/day', '/group')
-    msg = bot.send_message(chat_id=message.from_user.id, text='­', reply_markup=buttons,
-                           reply_to_message_id=True)
 def check_grp(msg):
 
     reply = set_group(msg)
@@ -270,11 +274,17 @@ def start_message(message):
     buttons.row('/today', '/tomorrow')
     buttons.row('/day', '/group')
 
-    bot.send_message(message.from_user.id, "Бот расписания для ЧНУ\n\n*Команды:*\n"
-                          "1. /today – выдает расисание на сегодня\n"
-                          "2. /tomorrow – выдает расисание на завтра\n"
-                          "3. /day – выдает расисание на день недели\n"
-                          "4. /group – записывает группу\n`Версия 3.1.3`\n`Создатель:` @A1omax", parse_mode='Markdown', reply_markup = buttons)
+    bot.send_message(message.chat.id, "Бот расписания для ЧНУ\n\n*Команды:*\n"
+                          "1. /today – выдает расписание на сегодня\n"
+                          "2. /tomorrow – выдает расписание на завтра\n"
+                          "3. /day – выдает расписание на день недели\n"
+                          "4. /group – выбор группы\n`Версия 3.2`\n`Создатель:` @A1omax", parse_mode='Markdown', reply_markup = buttons)
+
+@bot.message_handler(content_types=['text'])
+def options(message):
+    if message.chat.id == message.from_user.id:
+        bot.send_message(chat_id=message.chat.id, text="Неверно указана команда!")
+        start_message(message)
 
 
 bot.polling(none_stop=True)
