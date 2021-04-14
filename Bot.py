@@ -26,7 +26,7 @@ dict_days = \
 
 
 def time_update():
-    timezone = 2
+    timezone = 3
     offset = tzoffset(None, timezone * 3600)  # offset in seconds
     global now, hour, minute, date
     now = datetime.now(offset)
