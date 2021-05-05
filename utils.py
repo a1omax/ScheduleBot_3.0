@@ -11,9 +11,8 @@ def get_current_weekday_number() -> int:
     now = datetime.now()
     dt = datetime(month=now.month, year=now.year,
                   day=now.day, tzinfo=tz.gettz("Europe/Kiev"))
-    weekday = datetime.now(tzoffset(0, dt.utcoffset().seconds)).weekday()
 
-    return weekday if weekday <= 4 else -1
+    return datetime.now(tzoffset(0, dt.utcoffset().seconds)).weekday()
 
 
 def get_current_weekday_title_by_number(weekday_number: int) -> str:
@@ -48,15 +47,14 @@ def get_schedule(group: int, next_day: bool = False, weekday_number: int = -1) -
     if not subjects_info:
         return "Для указаной Вами группы нет расписания"
     else:
-        msg_for_user = get_current_weekday_title_by_number(
-            weekday_number)
+        msg_for_user = f"*{get_current_weekday_title_by_number(weekday_number)}*"
 
         for subject_info in subjects_info:
             title_and_cabinet_a = f"{subject_info[4]}\nКабинет: {subject_info[5]}" if subject_info[
                 4] else "Нет пары"
             title_and_cabinet_b = f"{subject_info[6]}\nКабинет: {subject_info[7]}" if subject_info[
                 6] else "Нет пары"
-            msg_for_user += f"\n\n{subject_info[3]} пара\nПодгруппа А:\n{title_and_cabinet_a}\nПодгруппа B:\n{title_and_cabinet_b}"
+            msg_for_user += f"\n\n*{subject_info[3]} пара*\n*Подгруппа А:*\n{title_and_cabinet_a}\n*Подгруппа B:*\n{title_and_cabinet_b}"
 
         return msg_for_user
 

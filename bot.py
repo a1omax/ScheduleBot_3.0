@@ -121,6 +121,8 @@ def back(call):
         reply_markup=utils.create_inline_keyboard_markup(kb=consts.DAYS_KB),
     )
 
+    bot.answer_callback_query(call.id)
+
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("today"))
 def send_schedule_by_today_from_inline_kb(call):

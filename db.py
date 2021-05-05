@@ -1,7 +1,7 @@
 import sqlite3
 
 from cfg import config_dict
-from typing import Union, List, Any, Tuple
+from typing import Union, List, Tuple
 
 
 conn = sqlite3.connect(config_dict["DATABASE"])
@@ -18,12 +18,15 @@ def create_users_table() -> None:
             reg_date text
         )""",
     )
+
     conn.commit()
 
 
 def set_start_page_or_ignore(tg_user_id: int) -> None:
+    sql_stmt = "insert or ignore into users (reg_date, tg_user_id, page) values(datetime('now'), ?, ?)"
+
     cursor.execute(
-        """insert or ignore into users (reg_date, tg_user_id, page) values(datetime('now'), ?, ?)""", (tg_user_id, "start"))
+        sql_stmt, (tg_user_id, "start"))
 
     conn.commit()
 
@@ -48,7 +51,7 @@ def return_value_from_DB(**kwargs: dict) -> Union[int, str, None]:
     return cursor.fetchall()[0][0]
 
 
-def return_all_subjects_info_by_group(group: str, weekday: int, week_type: str) -> List[Any]:
+def return_all_subjects_info_by_group(group: str, weekday: int, week_type: str) -> List[Tuple[Union[str, int]]]:
     sql_stmt = "select * from schedule where group_name = ? and week_day = ? and week_type = ?"
 
     cursor.execute(sql_stmt, (group, str(weekday), week_type))
