@@ -73,7 +73,8 @@ def create_inline_keyboard_markup(**kwargs: dict) -> types.InlineKeyboardMarkup:
 
 
 def create_reply_keyboard_markup(buttons: List[str]) -> types.ReplyKeyboardMarkup:
-    kb = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    kb = types.ReplyKeyboardMarkup(
+        one_time_keyboard=True,  resize_keyboard=True)
 
     kb.add(*buttons)
 
