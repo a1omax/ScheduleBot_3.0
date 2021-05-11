@@ -33,7 +33,7 @@ def get_current_weekday_title_by_number(weekday_number: int) -> str:
 
 
 def get_current_week_type() -> str:
-    return "even" if datetime.now().isocalendar()[1] & 1 else "odd"
+    return "odd" if datetime.now().isocalendar()[1] & 1 else "even"
 
 
 def get_schedule(group: int, next_day: bool = False, weekday_number: int = -1) -> str:
