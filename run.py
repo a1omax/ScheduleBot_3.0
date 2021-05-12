@@ -1,5 +1,4 @@
-import db
-
+from db import db
 from bot import bot
 
 
