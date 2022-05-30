@@ -1,10 +1,11 @@
-from db import db
-
 from datetime import datetime
+from typing import List
+
 from dateutil import tz
 from dateutil.tz import tzoffset
 from telebot import types
-from typing import List
+
+from db import db
 
 
 def get_current_weekday_number() -> int:
@@ -74,7 +75,7 @@ def create_inline_keyboard_markup(**kwargs: dict) -> types.InlineKeyboardMarkup:
 
 def create_reply_keyboard_markup(buttons: List[str]) -> types.ReplyKeyboardMarkup:
     kb = types.ReplyKeyboardMarkup(
-        one_time_keyboard=True,  resize_keyboard=True)
+        one_time_keyboard=True, resize_keyboard=True)
 
     kb.add(*buttons)
 

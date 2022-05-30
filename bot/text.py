@@ -1,7 +1,6 @@
 from bot import bot
-from bot import utils
 from bot import consts
-
+from bot import utils
 from db import db
 
 

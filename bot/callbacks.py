@@ -1,7 +1,6 @@
 from bot import bot
-from bot import utils
 from bot import consts
-
+from bot import utils
 from db import db
 
 
@@ -54,7 +53,7 @@ def send_schedule_by_tomorrow_from_inline_kb(call):
 def send_schedule_by_today_from_inline_kb(call):
     bot.send_message(call.message.chat.id, "Выберите день:", reply_markup=utils.create_inline_keyboard_markup(
         kb=consts.DAYS_KB),
-    )
+                     )
 
     bot.answer_callback_query(call.id)
 

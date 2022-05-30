@@ -1,6 +1,6 @@
-from db import cursor, conn
-
 from typing import Union, List, Tuple
+
+from db import cursor, conn
 
 
 def create_users_table() -> None:

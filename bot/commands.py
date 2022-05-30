@@ -1,7 +1,6 @@
 from bot import bot
-from bot import utils
 from bot import consts
-
+from bot import utils
 from db import db
 
 
@@ -64,7 +63,7 @@ def send_schedule_by_day(msg):
     else:
         bot.send_message(msg.chat.id, "Выберите день:", reply_markup=utils.create_inline_keyboard_markup(
             kb=consts.DAYS_KB),
-        )
+                         )
 
 
 @bot.message_handler(commands=["group"])

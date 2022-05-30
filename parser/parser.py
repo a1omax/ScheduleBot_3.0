@@ -1,7 +1,7 @@
-import openpyxl
 import os
 import sqlite3
 
+import openpyxl
 from openpyxl.utils import rows_from_range
 
 for FILENAME in os.listdir():
@@ -10,7 +10,6 @@ for FILENAME in os.listdir():
             break
 else:
     raise NameError("File .xlsx not found")
-
 
 con = sqlite3.connect('../schedule.db')
 cur = con.cursor()
@@ -31,17 +30,16 @@ print(FILENAME)
 
 
 def start_cell():
-
     for i in range(1, 20):
         if get_value([ws["A" + str(i)]])[0] == "День":
             global s_cell
-            s_cell = i-5
+            s_cell = i - 5
             return 1
 
     raise NameError("Нет клетки День")
 
 
-def read_wb(number_list):            # Чтение листа эксель
+def read_wb(number_list):  # Чтение листа эксель
     global ws
     wb = openpyxl.load_workbook(filename=FILENAME)
     ws = wb[wb.sheetnames[number_list]]
@@ -77,7 +75,6 @@ def get_cell_array(col, start, finish, step):
 
 # Принимает массив клеток и возвращает массив их значений (включая merged)
 def get_value(cell_array, flag=True):
-
     value_cell_array = []
 
     for i in range(len(cell_array)):
@@ -106,7 +103,7 @@ def get_value(cell_array, flag=True):
     return value_cell_array
 
 
-def get_group_names_array():           # Возвращает массив названий всех групп
+def get_group_names_array():  # Возвращает массив названий всех групп
     group_names = []
     i = 3
     while True:
@@ -122,7 +119,7 @@ def get_group_names_array():           # Возвращает массив на�
     return group_names
 
 
-def get_num_para_array():          # Возвращает массив номеров пар
+def get_num_para_array():  # Возвращает массив номеров пар
     num_para_array = []
     num_array = get_cell_array(2, 6, 300, 4)
     for i in num_array:
@@ -150,7 +147,6 @@ def get_schedule(group_names, num_paras):
     arr_cab_s_e = []
 
     for letter in range(len_letters):
-
         array_first_odd.append(get_value(get_cell_array(
             (3 + 3 * letter), 6, len_numbers * 4 + 2, 4)))
         array_second_odd.append(get_value(get_cell_array(
@@ -174,15 +170,12 @@ def get_schedule(group_names, num_paras):
         for c in range(len_numbers):
 
             if arr_cab_f_e[l][c] is None:
-
                 arr_cab_f_e[l][c] = arr_cab_f_o[l][c]
 
             if arr_cab_s_e[l][c] is None:
-
                 arr_cab_s_e[l][c] = arr_cab_f_e[l][c]
 
             if arr_cab_s_o[l][c] is None:
-
                 arr_cab_s_o[l][c] = arr_cab_f_o[l][c]
 
             if array_first_even[l][c] is None:
@@ -197,8 +190,7 @@ def get_schedule(group_names, num_paras):
             if num_paras[c] == num_paras[0] and c != 0:
                 day += 1
 
-            con = sqlite3.connect('../schedule.db')
-            cur = con.cursor()
+
             cur.execute("""CREATE TABLE IF NOT EXISTS schedule(
                     group_name TEXT,
                     week_type TEXT,
@@ -210,24 +202,28 @@ def get_schedule(group_names, num_paras):
                     cabinet_second TEXT
                     )""")
             cur.execute("""INSERT INTO schedule VALUES (?,?,?,?,?,?,?,?)""", (group_names[l], "odd", day, num_paras[c],
-                        array_first_odd[l][c], arr_cab_f_o[l][c], array_second_odd[l][c], arr_cab_s_o[l][c]))
+                                                                              array_first_odd[l][c], arr_cab_f_o[l][c],
+                                                                              array_second_odd[l][c],
+                                                                              arr_cab_s_o[l][c]))
             cur.execute("""INSERT INTO schedule VALUES (?,?,?,?,?,?,?,?)""", (group_names[l], "even", day, num_paras[c],
                                                                               array_first_even[l][c], arr_cab_f_e[l][c],
-                                                                              array_second_even[l][c], arr_cab_s_e[l][c]))
+                                                                              array_second_even[l][c],
+                                                                              arr_cab_s_e[l][c]))
             con.commit()
 
-    return [[array_first_odd, array_second_odd], [array_first_even, array_second_even]], [[arr_cab_f_o, arr_cab_s_o], [arr_cab_f_e, arr_cab_s_e]]
+    return [[array_first_odd, array_second_odd], [array_first_even, array_second_even]], [[arr_cab_f_o, arr_cab_s_o],
+                                                                                          [arr_cab_f_e, arr_cab_s_e]]
 
 
 def main():
-
+    pages = int(input("Pages: "))
     all_group_names = []
     all_num_paras = []
     all_schedules = []
     all_cabinets = []
-    for ws_number in range(8):
+    for ws_number in range(pages):
         print(ws_number)
-        read_wb(ws_number)                  # чтение 8 листов по очереди
+        read_wb(ws_number)  # чтение 8 листов по очереди
         start_cell()
         # запись всех 8 массивов названий групп в один массив
         all_group_names.append(get_group_names_array())
